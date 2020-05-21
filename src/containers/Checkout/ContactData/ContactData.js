@@ -8,13 +8,59 @@ import classes from './ContactData.css'
 
 class ContactData extends Component {
     state = {
-        name: '',
-        email: '',
-        address:{
-            street: '',
-            postalCode: ''
-        },
-        loading: false
+        orderForm: {
+                name: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'text',
+                        placeholder: 'Your Name'
+                    },
+                    value: ''
+                },
+                street: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'text',
+                        placeholder: 'Your Street'
+                    },
+                    value: ''
+                },
+                zipCode: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'text',
+                        placeholder: 'ZIP CODE'
+                    },
+                    value: ''
+                },
+                country: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'text',
+                        placeholder: 'Country'
+                    },
+                    value: ''
+                },
+                email: {
+                    elementType: 'input',
+                    elementConfig: {
+                        type: 'email',
+                        placeholder: 'Your Email Address'
+                    },
+                    value: ''
+                },
+                devileryMethod: {
+                    elementType: 'select',
+                    elementConfig: {
+                        options: [
+                            {value: 'fastest', displayValue: 'Fastet'},
+                            {value: 'cheapest', displayValue: 'Cheapest'}
+                        ]
+                    },
+                    value: ''
+                },
+            },
+            loading: false
     }
 
     orderHandler = (e) => {
@@ -23,15 +69,7 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            custumer: {
-                name: 'Lukelis Kaselionis',
-                address: {
-                    street: 'test st. 1',
-                    county: 'Lithuania'
-                },
-            email: 'test@test.com'
-            },
-            devileryMethod: 'fastest'
+            
         };
         axios.post('/orders.json', order)
             .then(response => {
@@ -46,13 +84,17 @@ class ContactData extends Component {
     render() {
         let form = (
         <form className={classes.Form}>
-            <Input inputtype="input" type="text" name="name" placeholder="Your name" />
+            <Input inputtype={'...'} type={'...'} placeholder={'...'} />
+            {/* <Input inputtype="input" type="text" name="name" placeholder="Your name" />
             <Input inputtype="input" type="email" name="email" placeholder="Your email" />
             <Input inputtype="input" type="text" name="street" placeholder="Street" />
-            <Input inputtype="input" type="text" name="postal" placeholder="Postal Code" />
+            <Input inputtype="input" type="text" name="postal" placeholder="Postal Code" /> */}
             <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
         </form>
         );
+
+        
+
         if(this.state.loading) {
             form = <Spinner/>
         }
