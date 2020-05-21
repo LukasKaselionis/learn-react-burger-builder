@@ -85,6 +85,7 @@ class ContactData extends Component {
                         ]
                     },
                     value: '',
+                    validation: {},
                     valid: true
                 },
             },
@@ -117,6 +118,10 @@ class ContactData extends Component {
 
     checkValidity(value, rules) {
         let isValid = true;
+
+        if(!rules) {
+            return true;
+        }
 
         if(rules.required) {
             isValid = value.trim() !== '' && isValid;
@@ -182,8 +187,6 @@ class ContactData extends Component {
             <Button btnType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
         </form>
         );
-
-        
 
         if(this.state.loading) {
             form = <Spinner/>
