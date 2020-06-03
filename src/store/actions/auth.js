@@ -21,9 +21,13 @@ export const authFail = (error) => {
     }
 }
 
-export const auth = (email, password) => {
-    const baseURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=';
+export const auth = (email, password, isSignUp) => {
+    let baseURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=';
     const apiKey = 'AIzaSyAxmL5-PHGRhONKtAmfiIQHwPjffZcfzPY';
+    if(!isSignUp){
+        baseURL = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
+    }
+
     return dispatch => {
         dispatch(authStart());
         const authData = {
