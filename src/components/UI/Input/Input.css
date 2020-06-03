@@ -12,7 +12,7 @@
 
 .InputElement {
     outline: none;
-    border: 1px solidr #ccc;
+    border: 1px solid #ccc;
     background-color: white;
     font: inherit;
     padding: 6px 10px;
