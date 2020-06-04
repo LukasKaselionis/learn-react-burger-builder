@@ -43,13 +43,19 @@ class Auth extends Component {
         isSignUp: true
     }
 
-    
+    componentDidMount() {
+        if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+            this.props.onSetAuthRedirectPath();
+        }
+    }
+
+
     checkValidity(value, rules) {
         let isValid = true;
         if (!rules) {
             return true;
         }
-        
+
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
         }
@@ -85,7 +91,7 @@ class Auth extends Component {
                 touched: true
             }
         }
-        this.setState({controls: updatedControls});
+        this.setState({ controls: updatedControls });
     }
 
     submitHandler = (event) => {
@@ -95,14 +101,14 @@ class Auth extends Component {
 
     switchAuthModeHandler = () => {
         this.setState(prevState => {
-            return {isSignUp: !prevState.isSignUp}
+            return { isSignUp: !prevState.isSignUp }
         })
     }
 
     render() {
         const formElementArray = [];
 
-        for(let key in this.state.controls) {
+        for (let key in this.state.controls) {
             formElementArray.push({
                 id: key,
                 config: this.state.controls[key]
@@ -110,49 +116,49 @@ class Auth extends Component {
         }
 
         let form = formElementArray.map(formElement => (
-            <Input 
+            <Input
                 key={formElement.id}
-                elementType={formElement.config.elementType} 
+                elementType={formElement.config.elementType}
                 elementConfig={formElement.config.elementConfig}
                 value={formElement.config.value}
                 isValid={!formElement.config.valid}
                 shouldValidate={formElement.config.validation}
                 touched={formElement.config.touched}
                 changed={(event) => this.inputChangedHandler(event, formElement.id)}
-            /> 
-            ))
-            
-            if(this.props.loading) {
-                form = <Spinner/>
-            }
+            />
+        ))
 
-            let errorMessage = null;
+        if (this.props.loading) {
+            form = <Spinner />
+        }
 
-            if (this.props.error) {
-                errorMessage = (
-                    <p>{this.props.error.message}</p>
-                )
-            }
+        let errorMessage = null;
 
-            let authRedirect = null;
-            if (this.props.isAuthenticated) {
-                authRedirect = <Redirect to="/" />
-            }
+        if (this.props.error) {
+            errorMessage = (
+                <p>{this.props.error.message}</p>
+            )
+        }
 
-            return (
-                <div className={classes.Auth}>
-                    {authRedirect}
-                    {errorMessage}
-                    <form onSubmit={this.submitHandler}>
-                        {form}
-                        <Button btnType="Success" onSubmit={this.submitHandler}>Submit</Button>
-                        <Button 
-                            btnType="Danger"
-                            clicked={this.switchAuthModeHandler}
-                        >SWITCH TO {this.state.isSignUp ? 'SIGNIN' : 'SIGNUP'}</Button>
-                    </form>
-                </div> 
-        )       
+        let authRedirect = null;
+        if (this.props.isAuthenticated) {
+            authRedirect = <Redirect to={this.props.authRedirectPath} />
+        }
+
+        return (
+            <div className={classes.Auth}>
+                {authRedirect}
+                {errorMessage}
+                <form onSubmit={this.submitHandler}>
+                    {form}
+                    <Button btnType="Success" onSubmit={this.submitHandler}>Submit</Button>
+                    <Button
+                        btnType="Danger"
+                        clicked={this.switchAuthModeHandler}
+                    >SWITCH TO {this.state.isSignUp ? 'SIGNIN' : 'SIGNUP'}</Button>
+                </form>
+            </div>
+        )
     }
 }
 
@@ -160,13 +166,16 @@ const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
         error: state.auth.error,
-        isAuthenticated: state.auth.token !== null
+        isAuthenticated: state.auth.token !== null,
+        buildingBurger: state.burgerBuilder.building,
+        authRedirectPath: state.auth.authRedirectPath
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp))
+        onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
+        onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/'))
     }
 }
 
