@@ -55,9 +55,7 @@ export const auth = (email, password, isSignUp) => {
         };
         axios.post(baseURL + apiKey, authData)
             .then(res => {
-                console.log(res);
                 const expirationDate = new Date(new Date().getTime() + res.data.expiresIn * 1000);
-                console.log(expirationDate)
                 localStorage.setItem('token', res.data.idToken);
                 localStorage.setItem('expirationDate', expirationDate);
                 localStorage.setItem('userId', res.data.userId)
@@ -65,7 +63,6 @@ export const auth = (email, password, isSignUp) => {
                 dispatch(checkAuthTimeout(res.data.expiresIn));
             })
             .catch(err => {
-                console.log(err.response.data.error);
                 dispatch(authFail(err.response.data.error));
             })
     }

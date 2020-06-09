@@ -4,9 +4,9 @@ import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 
 class OrderSummary extends Component {
     // This could be a functional component, doesn't have to be a class
-    componentWillUpdate() {
-        console.log('[ordersummary] update')
-    }
+    // componentWillUpdate() {
+    //     console.log('[ordersummary] update')
+    // }
 
     render () {
     const ingredientSummary = Object.keys(this.props.ingredients)
